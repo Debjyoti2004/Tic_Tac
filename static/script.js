@@ -1,4 +1,4 @@
-// Event delegation for cell clicks
+
 document.addEventListener("DOMContentLoaded", () => {
     const boardElement = document.querySelector("table");
 
@@ -11,10 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// Make a move
+
 function makeMove(row, col) {
     const cell = document.getElementById(`cell-${row}-${col}`);
-    cell.innerHTML = '<div class="loader"></div>'; // Show loading spinner
+    cell.innerHTML = '<div class="loader"></div>'; 
 
     fetch("/move", {
         method: "POST",
@@ -34,7 +34,7 @@ function makeMove(row, col) {
     });
 }
 
-// Reset the game
+
 function resetGame() {
     fetch("/reset", {
         method: "POST",
@@ -46,7 +46,7 @@ function resetGame() {
     });
 }
 
-// Update the board
+
 function updateBoard(board) {
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
@@ -56,7 +56,7 @@ function updateBoard(board) {
     }
 }
 
-// Update the game message
+
 function updateMessage(winner, game_over) {
     const messageDiv = document.getElementById("message");
     if (game_over) {

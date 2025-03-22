@@ -3,13 +3,11 @@ import tictactoe as ttt
 
 app = Flask(__name__)
 
-# Initialize the game board
 board = ttt.initial_state()
 ai_turn = False
 
 @app.route("/")
 def index():
-    """Render the main game page."""
     global board, ai_turn
     winner = ttt.winner(board)
     game_over = ttt.terminal(board)
@@ -17,7 +15,6 @@ def index():
 
 @app.route("/move", methods=["POST"])
 def move():
-    """Handle player moves via AJAX."""
     global board, ai_turn
     if not ttt.terminal(board):
         row = int(request.json["row"])
@@ -26,7 +23,6 @@ def move():
             board = ttt.result(board, (row, col))
             ai_turn = True
 
-            # AI's turn
             if not ttt.terminal(board):
                 move = ttt.minimax(board)
                 board = ttt.result(board, move)
@@ -43,7 +39,7 @@ def move():
 
 @app.route("/reset", methods=["POST"])
 def reset():
-    """Reset the game via AJAX."""
+    
     global board, ai_turn
     board = ttt.initial_state()
     ai_turn = False

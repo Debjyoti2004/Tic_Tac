@@ -1,4 +1,4 @@
-/* General Styles */
+
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #1e1e2f, #2a2a40);
@@ -31,7 +31,7 @@ h1 {
     color: #ff6b6b;
 }
 
-/* Board Styles */
+
 table {
     margin: 0 auto;
     border-collapse: collapse;
@@ -66,7 +66,6 @@ button {
     color: #fff;
 }
 
-/* Reset Button */
 #reset-button {
     margin-top: 1.5rem;
     padding: 0.75rem 1.5rem;
@@ -84,7 +83,7 @@ button {
     transform: translateY(-2px);
 }
 
-/* Loading Spinner */
+
 .loader {
     border: 4px solid rgba(255, 255, 255, 0.3);
     border-top: 4px solid #fff;
