@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, jsonify
 import tictactoe as ttt
 
 app = Flask(__name__)
@@ -13,35 +13,41 @@ def index():
     global board, ai_turn
     winner = ttt.winner(board)
     game_over = ttt.terminal(board)
-
-    if not game_over and ai_turn:
-        # AI's turn
-        move = ttt.minimax(board)
-        board = ttt.result(board, move)
-        ai_turn = False
-        return redirect(url_for("index"))
-
     return render_template("index.html", board=board, winner=winner, game_over=game_over)
 
 @app.route("/move", methods=["POST"])
 def move():
-    """Handle player moves."""
+    """Handle player moves via AJAX."""
     global board, ai_turn
     if not ttt.terminal(board):
-        row = int(request.form["row"])
-        col = int(request.form["col"])
+        row = int(request.json["row"])
+        col = int(request.json["col"])
         if (row, col) in ttt.actions(board):
             board = ttt.result(board, (row, col))
             ai_turn = True
-    return redirect(url_for("index"))
 
-@app.route("/reset")
+            # AI's turn
+            if not ttt.terminal(board):
+                move = ttt.minimax(board)
+                board = ttt.result(board, move)
+                ai_turn = False
+
+            winner = ttt.winner(board)
+            game_over = ttt.terminal(board)
+            return jsonify({
+                "board": board,
+                "winner": winner,
+                "game_over": game_over
+            })
+    return jsonify({"error": "Invalid move"})
+
+@app.route("/reset", methods=["POST"])
 def reset():
-    """Reset the game."""
+    """Reset the game via AJAX."""
     global board, ai_turn
     board = ttt.initial_state()
     ai_turn = False
-    return redirect(url_for("index"))
+    return jsonify({"board": board})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
